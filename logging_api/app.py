@@ -1,30 +1,24 @@
 from flask import Blueprint, request, jsonify
 from .models import create_log_model, APIKey
 from .database import db_session
+from .controllers import validate_api_key
 import secrets
+from .controllers import Web
 
+# Create the API blueprint
 api_bp = Blueprint("api_bp", __name__)
 
-
-def validate_api_key(api_key, app_name):
-    api_key_entry = (
-        db_session.query(APIKey).filter_by(key=api_key, app_name=app_name).first()
-    )
-    return api_key_entry is not None
+# init the controller
+DB = Web()
 
 
 @api_bp.route("/log/<app_name>", methods=["POST"])
 def log(app_name):
+    # Check if the API key is valid
     api_key = request.headers.get("API-Key")
     if not api_key or not validate_api_key(api_key, app_name):
         return jsonify({"error": "Invalid or missing API key"}), 401
-
-    LogModel = create_log_model(app_name)
-    data = request.json
-    log_entry = LogModel(**data)
-    db_session.add(log_entry)
-    db_session.commit()
-    return jsonify({"message": "Log entry added"}), 201
+    return DB.log(app_name, request.json)
 
 
 @api_bp.route("/logs/<app_name>", methods=["GET"])
