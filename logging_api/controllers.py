@@ -25,14 +25,16 @@ class Web:
         if not self.validate_api_key(self.api_key, app_name):
             return {"error": "Invalid or missing API key"}, 401
 
-        r = req.post(f"{self.api_url}/log/{app_name}", headers=self.headers, json=data)
+        r = req.post(f"{self.api_url}/log/{app_name}",
+                     headers=self.headers, json=data)
         return r.json(), r.status_code
 
     def register_app(self, app_name):
         if not app_name:
             return {"error": "App name is required"}, 400
 
-        r = req.post(f"{self.api_url}/register_app", json={"app_name": app_name})
+        r = req.post(f"{self.api_url}/register_app",
+                     json={"app_name": app_name})
         return r.json(), r.status_code
 
 
@@ -63,10 +65,11 @@ class Local:
 
     def register_app(self, app_name):
         # Check if the app name is already registered
-        api_key_entry = db_session.query(APIKey).filter_by(app_name=app_name).first()
+        api_key_entry = db_session.query(
+            APIKey).filter_by(app_name=app_name).first()
         if api_key_entry:
             return {
-                "error": "App name already registered. Please choose another name."
+                "error": "App name already registered."
             }, 400
 
         # Generate a new API key
@@ -93,7 +96,8 @@ def load_config():
     """Loads the configuration from litelog.json."""
     if not os.path.exists("litelog.json"):
         click.echo(
-            "No configuration found. Please run 'logging-api init' first.", err=True
+            "No configuration found. Please run 'logging-api init' first.",
+            err=True
         )
         raise click.Abort()
 

@@ -29,7 +29,8 @@ def init():
     if click.confirm("Do you want to create a new logging instance?"):
         conf["instance_type"] = "local"
         conf["database_path"] = click.prompt(
-            "Enter the path to the SQLite database", default="instance/logging_api.db"
+            "Enter the path to the SQLite database",
+            default="instance/logging_api.db"
         )
         confirm_choice = None
         while True:
@@ -41,7 +42,8 @@ def init():
                 app_name = click.prompt(
                     "Enter the name of your application to register it"
                 )
-            confirm_choice = click.confirm(f"Register app '{app_name}'?", abort=True)
+            confirm_choice = click.confirm(
+                f"Register app '{app_name}'?", abort=True)
             if confirm_choice:
                 break
 
@@ -98,7 +100,10 @@ def register_app(app_name):
     # Check if the app name is already registered
     api_key_entry = session.query(APIKey).filter_by(app_name=app_name).first()
     if api_key_entry:
-        click.echo("App name already registered. Please choose another name.", err=True)
+        click.echo(
+            "App name already registered. Please choose another name.",
+            err=True
+        )
         raise click.Abort()
 
     # Generate a new API key

@@ -1,3 +1,2 @@
 SQLALCHEMY_DATABASE_URI = 'sqlite:///logging_api.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-
