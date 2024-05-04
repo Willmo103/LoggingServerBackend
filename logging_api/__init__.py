@@ -1,6 +1,8 @@
+# path: logging_api/__init__.py
 from flask import Flask
-from .database import db_session, init_db
-from .routes import logs_bp, auth_bp
+from .database.database import db_session, init_db
+from .routes.logs import logs_bp
+from .routes.auth import auth_bp
 
 
 def create_app():

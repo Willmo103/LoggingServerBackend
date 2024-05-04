@@ -2,6 +2,7 @@
 import secrets
 from flask import Blueprint, request, jsonify
 from logging_api.models.api_key import APIKey
+from logging_api.models.log_entry import create_log_model
 from logging_api.database import db_session
 
 auth_bp = Blueprint("auth", __name__)

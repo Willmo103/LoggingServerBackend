@@ -1,3 +1,4 @@
+# Path: logging_api/models/log_entry.py
 """
 This module contains the LogEntry model class.
 
