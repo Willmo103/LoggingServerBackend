@@ -1,42 +1,42 @@
-# Path: logging_api/controllers.py
-import secrets
-from flask import jsonify
-from .models import create_log_model, db_session, APIKey
-import json
-import click
-import os
-import requests as req
+# # Path: logging_api/controllers.py
+# import secrets
+# from flask import jsonify
+# from .models import create_log_model, db_session, APIKey
+# import json
+# import click
+# import os
+# import requests as req
 
 
-class WebInterface:
-    def __init__(self):
-        conf = load_config()
-        self.api_key = conf["api_key"]
-        self.headers = {"API-Key": self.api_key}
-        self.api_url = conf["api_url"]
+# class WebInterface:
+#     def __init__(self):
+#         conf = load_config()
+#         self.api_key = conf["api_key"]
+#         self.headers = {"API-Key": self.api_key}
+#         self.api_url = conf["api_url"]
 
-    def get_logs(self, app_name):
-        if not self.validate_api_key(self.api_key, app_name):
-            return {"error": "Invalid or missing API key"}, 401
+#     def get_logs(self, app_name):
+#         if not self.validate_api_key(self.api_key, app_name):
+#             return {"error": "Invalid or missing API key"}, 401
 
-        r = req.get(f"{self.api_url}/logs/{app_name}", headers=self.headers)
-        return r.json(), r.status_code
+#         r = req.get(f"{self.api_url}/logs/{app_name}", headers=self.headers)
+#         return r.json(), r.status_code
 
-    def log(self, app_name, data):
-        if not self.validate_api_key(self.api_key, app_name):
-            return {"error": "Invalid or missing API key"}, 401
+#     def log(self, app_name, data):
+#         if not self.validate_api_key(self.api_key, app_name):
+#             return {"error": "Invalid or missing API key"}, 401
 
-        r = req.post(f"{self.api_url}/log/{app_name}",
-                     headers=self.headers, json=data)
-        return r.json(), r.status_code
+#         r = req.post(f"{self.api_url}/log/{app_name}",
+#                      headers=self.headers, json=data)
+#         return r.json(), r.status_code
 
-    def register_app(self, app_name):
-        if not app_name:
-            return {"error": "App name is required"}, 400
+#     def register_app(self, app_name):
+#         if not app_name:
+#             return {"error": "App name is required"}, 400
 
-        r = req.post(f"{self.api_url}/register_app",
-                     json={"app_name": app_name})
-        return r.json(), r.status_code
+#         r = req.post(f"{self.api_url}/register_app",
+#                      json={"app_name": app_name})
+#         return r.json(), r.status_code
 
 
 # class Local:
@@ -93,14 +93,14 @@ class WebInterface:
 #         return False
 
 
-def load_config():
-    """Loads the configuration from litelog.json."""
-    if not os.path.exists("litelog.json"):
-        click.echo(
-            "No configuration found. Please run 'logging-api init' first.",
-            err=True
-        )
-        raise click.Abort()
+# def load_config():
+#     """Loads the configuration from litelog.json."""
+#     if not os.path.exists("litelog.json"):
+#         click.echo(
+#             "No configuration found. Please run 'logging-api init' first.",
+#             err=True
+#         )
+#         raise click.Abort()
 
-    with open("litelog.json", "r") as f:
-        return json.load(f)
+#     with open("litelog.json", "r") as f:
+#         return json.load(f)
