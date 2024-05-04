@@ -1,3 +1,23 @@
+"""
+Base class for all models in the application.
+
+This module contains the base class for all models in the application. This
+class is used to create the database schema and to create the database tables
+from the models.
+
+Attributes:
+    Base: The base class for all models in the application. This class is used
+        to create the database schema and to create the database tables from
+        the models.
+"""
+
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+
+try:
+    from .log_entry import create_log_model as create_log_model
+    from .api_key import APIKey as APIKey
+except ImportError:
+    from logging_api.models.log_entry import create_log_model as create_log_model  # noqa: F401, E501
+    from logging_api.models.api_key import APIKey as APIKey  # noqa: F401
