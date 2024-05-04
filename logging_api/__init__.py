@@ -1,14 +1,19 @@
 from flask import Flask
-from .database import init_db
+from .database import db_session, init_db
+from .routes import logs_bp, auth_bp
 
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_pyfile('instance/config.py')
+    app.config.from_object("logging_api.config")
 
-    init_db(app)
+    init_db()
 
-    from .app import api_bp
-    app.register_blueprint(api_bp)
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        db_session.remove()
+
+    app.register_blueprint(logs_bp)
+    app.register_blueprint(auth_bp)
 
     return app
